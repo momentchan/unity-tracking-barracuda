@@ -1,0 +1,24 @@
+#pragma kernel Preprocess
+
+sampler2D _Input;
+RWBuffer<float> _Output;
+uint2 _InputSize;
+
+[numthreads(8, 8, 1)]
+void Preprocess(uint3 id : SV_DispatchThreadID)
+{
+	if (any(id.xy >= _InputSize)) return;
+
+	float2 uv = (id.xy + 0.5) / _InputSize;
+	uv.y = 1 - uv.y;
+
+	float2 dx = float2(1.0 / _InputSize.x, 0);
+	float2 dy = float2(0, -1.0 / _InputSize.y);
+
+	float3 rgb = tex2Dgrad(_Input, uv, dx, dy).rgb * 2 - 1;
+
+	uint offs = (id.y * _InputSize.x + id.x) * 3;
+	_Output[offs + 0] = rgb.r;
+	_Output[offs + 1] = rgb.g;
+	_Output[offs + 2] = rgb.b;
+}

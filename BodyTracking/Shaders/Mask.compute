@@ -1,0 +1,34 @@
+#pragma kernel PostprocessMask
+
+#include "Common.hlsl"
+
+// Input
+Texture2D<float> _Segments;
+Texture2D<float> _Heatmaps;
+uint2 _InputSize;
+
+// Output
+RWTexture2D<float4> _Output;
+
+[numthreads(8, 8, 1)]
+void PostprocessMask(uint2 id : SV_DispatchThreadID)
+{
+    if (!all(id < _InputSize)) return;
+
+    float s = BodyPix_Sigmoid(_Segments[id]);
+
+    float max_h = _Heatmaps[id * uint2(BODYPIX_PART_COUNT, 1)];
+    uint max_i = 0;
+
+    for (uint i = 1; i < BODYPIX_PART_COUNT; i++)
+    {
+        float h = _Heatmaps[uint2(id.x * BODYPIX_PART_COUNT + i, id.y)];
+        if (h > max_h)
+        {
+            max_h = h;
+            max_i = i;
+        }
+    }
+
+    _Output[id] = float4((float3)max_i / BODYPIX_PART_COUNT, s);
+}

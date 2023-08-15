@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4dc6cabdbb6a3a438ac492f37cbd25d, type: 3}
+  m_Name: NNCam
+  m_EditorClassIdentifier: 
+  model: {fileID: 5022602860645237092, guid: d8765e1c3be5a5049a7fbb5ed4900452, type: 3}
+  stride: 16
+  preprocess: {fileID: 7200000, guid: 647b1da653398e94d9e590375ea59182, type: 3}
+  mask: {fileID: 7200000, guid: 60637dd796c636b4bbf6c3c01cac0932, type: 3}
+  keypoints: {fileID: 7200000, guid: 538b12b1b2bc417428542bbbca4ad99b, type: 3}
+  postprocess: {fileID: 4800000, guid: d34abfc181436764fbc54e438ccb80b1, type: 3}
