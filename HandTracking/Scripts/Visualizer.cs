@@ -44,12 +44,12 @@ namespace mj.gist.tracking.hands {
         }
 
         private void OnEnable() {
-            if (GraphicsSettings.renderPipelineAsset != null)
+            if (GraphicsSettings.defaultRenderPipeline != null)
                 RenderPipelineManager.endFrameRendering += OnCameraRender;
         }
 
         private void OnDisable() {
-            if (GraphicsSettings.renderPipelineAsset != null)
+            if (GraphicsSettings.defaultRenderPipeline != null)
                 RenderPipelineManager.endFrameRendering -= OnCameraRender;
         }
 

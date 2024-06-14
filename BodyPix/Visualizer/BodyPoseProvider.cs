@@ -5,6 +5,7 @@ namespace mj.gist.tracking.bodyPix {
     public class BodyPoseProvider : SingletonMonoBehaviour<BodyPoseProvider> {
         [SerializeField] private ResourceSet resources = null;
         [SerializeField] private Vector2Int resolution = new Vector2Int(512, 384);
+        [SerializeField] private RenderTexture maskTex = null;
 
         public GraphicsBuffer KeypointBuffer => detector.KeypointBuffer;
         public RenderTexture MaskTexture => detector.MaskTexture;
@@ -20,6 +21,9 @@ namespace mj.gist.tracking.bodyPix {
 
         void LateUpdate() {
             detector.ProcessImage(source.Texture);
+
+            if(maskTex != null)
+                Graphics.Blit(MaskTexture, maskTex);
         }
 
         void OnDestroy() {

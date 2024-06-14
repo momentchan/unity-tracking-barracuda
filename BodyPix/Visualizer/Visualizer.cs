@@ -1,9 +1,11 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
-namespace mj.gist.tracking.bodyPix {
-    public class Visualizer : MonoBehaviour {
+namespace mj.gist.tracking.bodyPix
+{
+    public class Visualizer : MonoBehaviour
+    {
         [SerializeField] private RawImage rawUI = null;
         [SerializeField] private RawImage maskUI = null;
         [SerializeField] private Shader shader;
@@ -16,7 +18,8 @@ namespace mj.gist.tracking.bodyPix {
         private BodyPoseProvider provider;
         private ImageSource source = null;
 
-        void Start() {
+        void Start()
+        {
             provider = GetComponent<BodyPoseProvider>();
             source = GetComponent<ImageSource>();
 
@@ -26,8 +29,10 @@ namespace mj.gist.tracking.bodyPix {
             material = new Material(shader);
         }
 
-        private void LateUpdate() {
-            if (Input.GetKeyDown(debugKey)) {
+        private void LateUpdate()
+        {
+            if (Input.GetKeyDown(debugKey))
+            {
                 drawDebug = !drawDebug;
                 rawUI.enabled = drawDebug;
                 maskUI.enabled = drawDebug;
@@ -38,7 +43,8 @@ namespace mj.gist.tracking.bodyPix {
             Graphics.Blit(provider.MaskTexture, mask, material, 0);
         }
 
-        protected void OnCameraRender(ScriptableRenderContext context, Camera[] cameras) {
+        protected void OnCameraRender(ScriptableRenderContext context, Camera[] cameras)
+        {
             if (!drawDebug) return;
 
             material.SetBuffer("_Keypoints", provider.KeypointBuffer);
@@ -54,17 +60,20 @@ namespace mj.gist.tracking.bodyPix {
             Graphics.DrawProceduralNow(MeshTopology.Lines, 2, 12);
         }
 
-        private void OnEnable() {
-            if (GraphicsSettings.renderPipelineAsset != null)
+        private void OnEnable()
+        {
+            if (GraphicsSettings.defaultRenderPipeline != null)
                 RenderPipelineManager.endFrameRendering += OnCameraRender;
         }
 
-        private void OnDisable() {
-            if (GraphicsSettings.renderPipelineAsset != null)
+        private void OnDisable()
+        {
+            if (GraphicsSettings.defaultRenderPipeline != null)
                 RenderPipelineManager.endFrameRendering -= OnCameraRender;
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             Destroy(material);
             Destroy(mask);
         }
